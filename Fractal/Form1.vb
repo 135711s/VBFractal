@@ -4,7 +4,7 @@ Public Class Form1
     Public thread As New Thread(AddressOf mainloop)
     Public random As New Random
     Public session As String = random.Next(1000, 10000)
-    Public vbgame As New VBGame
+    Public display As New VBGame
     Public complex As New complex
 
     Dim esccolor As System.Drawing.Color = Color.FromArgb(0, 255, 255)
@@ -19,29 +19,8 @@ Public Class Form1
 
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        vbgame.setDisplay(Me, "1280x720", "Fractal")
-        'vbgame.setDisplay(Me, "1920x1080", "Fractal", True)
+        display.setDisplay(Me, New Size(800, 600), "Fractal", True)
         thread.Start()
-    End Sub
-
-    Sub testloop()
-        Dim c As New HSV(189, 51, 100)
-        c.fromRGB(0, 255, 255)
-        While True
-            c.H += 1
-
-            vbgame.fill(c.toRGB())
-
-            vbgame.drawRect(New Rectangle(0, 0, 55, vbgame.height), vbgame.white)
-            vbgame.drawRect(New Rectangle(0, 0, 50, vbgame.height), vbgame.black)
-
-            vbgame.drawRect(New Rectangle(5, 0, 10, vbgame.height * (c.toRGB().R / 255)), vbgame.red)
-            vbgame.drawRect(New Rectangle(20, 0, 10, vbgame.height * (c.toRGB().G / 255)), vbgame.green)
-            vbgame.drawRect(New Rectangle(35, 0, 10, vbgame.height * (c.toRGB().B / 255)), vbgame.blue)
-
-            vbgame.update()
-            vbgame.clockTick(60)
-        End While
     End Sub
 
     Sub drawFractal()
@@ -55,21 +34,21 @@ Public Class Form1
         Dim spd As Double
         Dim i As Integer
         Dim x, y, mag As Double
-        Dim sbounds As Double = vbgame.width + vbgame.height
+        Dim sbounds As Double = display.width + display.height
         Dim esccolort As System.Drawing.Color
         Dim esccolortHSV As New HSV
 
-        For x = -vbgame.width / 2 To vbgame.width / 2
+        For x = -display.width / 2 To display.width / 2
 
             If x Mod 50 = 0 Then
-                vbgame.update()
+                display.update()
             End If
 
             If x Mod fastlevel <> 0 And fastlevel > 1 Then
                 Continue For
             End If
 
-            For y = -vbgame.height / 2 To vbgame.height / 2
+            For y = -display.height / 2 To display.height / 2
 
                 If y Mod fastlevel <> 0 And fastlevel > 1 Then
                     Continue For
@@ -79,8 +58,8 @@ Public Class Form1
                 c.y = y / scale + shift_y
 
                 omc = c.clone()
-                oc.x = x + vbgame.width / 2
-                oc.y = y + vbgame.height / 2
+                oc.x = x + display.width / 2
+                oc.y = y + display.height / 2
 
                 esc = False
                 spd = 0
@@ -108,9 +87,9 @@ Public Class Form1
                     'esccolortHSV.H += Math.Log(Math.Log(mag)) / Math.Log(2)
                     'esccolortHSV.V *= (spd / iterations)
                     esccolort = esccolortHSV.toRGB()
-                    vbgame.drawRect(New Rectangle(oc.x, oc.y, fastlevel, fastlevel), esccolort)
+                    display.drawRect(New Rectangle(oc.x, oc.y, fastlevel, fastlevel), esccolort)
                 Else
-                    vbgame.drawRect(New Rectangle(oc.x, oc.y, fastlevel, fastlevel), vbgame.black)
+                    display.drawRect(New Rectangle(oc.x, oc.y, fastlevel, fastlevel), VBGame.black)
                 End If
             Next
         Next
@@ -123,7 +102,7 @@ Public Class Form1
 
             Dim zoomin As Boolean = False
 
-            Dim b As New button
+            Dim b As Button
             Dim tx As Integer = 0
             Dim ty As Integer = 0
 
@@ -137,54 +116,33 @@ Public Class Form1
             zoom = 256
             iterations = 64
 
-            b.useDisplay(vbgame)
-            b.text = "Reset"
-            b.fontsize = 8
-            b.textcolor = vbgame.black
-
+            b = New Button(display, "Reset")
             buttons.Add(b.clone())
 
-            b.text = "Set Center Point..."
-            b.fontsize = 8
-            b.textcolor = vbgame.black
-
+            b = New Button(display, "Set Center Point...")
             buttons.Add(b.clone())
 
-            b.text = "Toggle Fast"
-            b.fontsize = 8
-            b.textcolor = vbgame.black
-
+            b = New Button(display, "Toggle Fast")
             buttons.Add(b.clone())
 
-            b.text = "Increase Iterations"
-            b.fontsize = 8
-            b.textcolor = vbgame.black
-
+            b = New Button(display, "Increase Iterations")
             buttons.Add(b.clone())
 
-            b.text = "Decrease Iterations"
-            b.fontsize = 8
-            b.textcolor = vbgame.black
-
+            b = New Button(display, "Decrease Iterations")
             buttons.Add(b.clone())
 
-            b.text = "Random Color"
-            b.fontsize = 8
-            b.textcolor = vbgame.black
-
+            b = New Button(display, "Random Color")
             buttons.Add(b.clone())
 
-            b.text = "Cycle Mode"
-            b.fontsize = 8
-            b.textcolor = vbgame.black
-
+            b = New Button(display, "Cycle Mode")
             buttons.Add(b.clone())
 
-            b.text = "Set C (If julia)..."
-            b.fontsize = 8
-            b.textcolor = vbgame.black
-
+            b = New Button(display, "Set C (If julia)...")
             buttons.Add(b.clone())
+
+            For Each Button As Button In buttons
+                Button.fontsize = 8
+            Next
 
             fastlevel = maxfastlevel
 
@@ -192,11 +150,11 @@ Public Class Form1
 
             While True
 
-                For Each e In vbgame.getKeyDownEvents()
+                For Each e As KeyEventArgs In display.getKeyDownEvents()
 
-                    If e = "R" Then
+                    If e.KeyCode = Keys.R Then
                         Exit While
-                    ElseIf e = "F" Then
+                    ElseIf e.KeyCode = Keys.F Then
                         change = True
                         If maxfastlevel = 1 Then
                             maxfastlevel = 5
@@ -204,113 +162,120 @@ Public Class Form1
                             maxfastlevel = 1
                         End If
                         fastlevel = maxfastlevel
-                    ElseIf e = "Up" Then
+                    ElseIf e.KeyCode = Keys.Up Then
                         change = True
                         shift_y -= 256 / zoom
-                    ElseIf e = "Down" Then
+                    ElseIf e.KeyCode = Keys.Down Then
                         change = True
                         shift_y += 256 / zoom
-                    ElseIf e = "Left" Then
+                    ElseIf e.KeyCode = Keys.Left Then
                         change = True
                         shift_x -= 256 / zoom
-                    ElseIf e = "Right" Then
+                    ElseIf e.KeyCode = Keys.Right Then
                         change = True
                         shift_x += 256 / zoom
-                    ElseIf e = "Z" Then
+                    ElseIf e.KeyCode = Keys.Z Then
                         change = True
-                        If zoomin Then
-                            zoomin = False
-                        Else
-                            zoomin = True
-                        End If
+                        zoomin = Not zoomin
 
-                    ElseIf e = "X" Then
+                    ElseIf e.KeyCode = Keys.X Then
                         change = True
                         zoom *= 2
-                    ElseIf e = "C" Then
+                    ElseIf e.KeyCode = Keys.C Then
                         change = True
                         zoom /= 2
 
-                    ElseIf e = "N" Then
+                    ElseIf e.KeyCode = Keys.N Then
                         change = True
                         iterations *= 2
-                    ElseIf e = "M" Then
+                    ElseIf e.KeyCode = Keys.M Then
                         change = True
                         iterations /= 2
 
-                    ElseIf e = "H" Then
+                    ElseIf e.KeyCode = Keys.H Then
                         change = True
-                        If drawhud Then
-                            drawhud = False
-                        Else
-                            drawhud = True
-                        End If
+                        drawhud = Not drawhud
                     End If
 
                 Next
 
-                If drawhud Then
-                    tx = 5
-                    ty = 5
-                    For Each button As button In buttons
+                For Each e As MouseEvent In display.getMouseEvents()
 
-                        button.setRect(New Rectangle(tx, ty, Len(button.text) * 5.75, button.fontsize * 2))
-                        button.setColor(vbgame.white, esccolor)
-                        ty += button.fontsize * 2 + 5
+                    If drawhud Then
 
-                        If button.handle() Then
-                            change = True
+                        tx = 5
+                        ty = 5
 
-                            If button.text = "Reset" Then
-                                Exit While
+                        For Each button As Button In buttons
 
-                            ElseIf button.text = "Random Color" Then
-                                esccolor = New HSV(random.Next(0, 361), 100, 100).toRGB()
+                            button.setRect(New Rectangle(tx, ty, Len(button.text) * 5.75, button.fontsize * 2))
+                            button.setColor(VBGame.white, esccolor)
+                            ty += button.fontsize * 2 + 5
 
-                            ElseIf button.text = "Toggle Fast" Then
-                                If maxfastlevel = 1 Then
-                                    maxfastlevel = 5
-                                Else
-                                    maxfastlevel = 1
+                            button.draw()
+
+                            If button.handle(e) Then
+                                change = True
+
+                                If button.text = "Reset" Then
+                                    Exit While
+
+                                ElseIf button.text = "Random Color" Then
+                                    esccolor = New HSV(random.Next(0, 361), 100, 100).toRGB()
+
+                                ElseIf button.text = "Toggle Fast" Then
+                                    If maxfastlevel = 1 Then
+                                        maxfastlevel = 5
+                                    Else
+                                        maxfastlevel = 1
+                                    End If
+                                    fastlevel = maxfastlevel
+
+                                ElseIf button.text = "Increase Iterations" Then
+                                    iterations *= 2
+
+                                ElseIf button.text = "Decrease Iterations" Then
+                                    iterations /= 2
+
+                                ElseIf button.text = "Set Center Point..." Then
+                                    shift_x = InputBox("Enter real number", "Set Center Point...", 0)
+                                    shift_y = InputBox("Enter imaginary", "Set Center Point...", 0)
+
+                                ElseIf button.text = "Cycle Mode" Then
+                                    If complex.mode = "mandelbrot" Then
+                                        complex.mode = "random_julia"
+                                    Else
+                                        complex.mode = "mandelbrot"
+                                    End If
+                                ElseIf button.text = "Set C (If julia)..." Then
+                                    complex.randompoint.x = InputBox("Enter real number", "Set C (If julia)...", 0)
+                                    complex.randompoint.y = InputBox("Enter imaginary", "Set C (If julia)...", 0)
                                 End If
-                                fastlevel = maxfastlevel
-
-                            ElseIf button.text = "Increase Iterations" Then
-                                iterations *= 2
-
-                            ElseIf button.text = "Decrease Iterations" Then
-                                iterations /= 2
-
-                            ElseIf button.text = "Set Center Point..." Then
-                                shift_x = InputBox("Enter real number", "Set Center Point...", 0)
-                                shift_y = InputBox("Enter imaginary", "Set Center Point...", 0)
-
-                            ElseIf button.text = "Cycle Mode" Then
-                                If complex.mode = "mandelbrot" Then
-                                    complex.mode = "random_julia"
-                                Else
-                                    complex.mode = "mandelbrot"
-                                End If
-                            ElseIf button.text = "Set C (If julia)..." Then
-                                complex.randompoint.x = InputBox("Enter real number", "Set C (If julia)...", 0)
-                                complex.randompoint.y = InputBox("Enter imaginary", "Set C (If julia)...", 0)
                             End If
-                        End If
+                        Next
+                    End If
+                Next
+                If drawhud Then
+
+                    ty = 5
+
+                    For Each Button In buttons
+                        ty += Button.fontsize * 2 + 5
                     Next
 
                     If complex.mode = "random_julia" Then
-                        vbgame.drawText(New Point(tx, ty), "Formula: f(x) = z^2 + " & complex.randompoint.x & " " & complex.randompoint.y & "i", vbgame.grey, 10)
+                        display.drawText(New Point(tx, ty), "Formula: f(x) = z^2 + " & complex.randompoint.x & " " & complex.randompoint.y & "i", VBGame.grey, 10)
                         ty += 12
                     ElseIf complex.mode = "mandelbrot" Then
-                        vbgame.drawText(New Point(tx, ty), "Formula: f(x) = z^2 + c", vbgame.grey, 10)
+                        display.drawText(New Point(tx, ty), "Formula: f(x) = z^2 + c", VBGame.grey, 10)
                         ty += 12
                     End If
 
-                    vbgame.drawText(New Point(tx, ty), "Zoom factor: " & zoom, vbgame.grey, 10)
+                    display.drawText(New Point(tx, ty), "Zoom factor: " & zoom, VBGame.grey, 10)
                     ty += 12
-                    vbgame.drawText(New Point(tx, ty), "Center Position: " & shift_x & " " & shift_y & "i", vbgame.grey, 10)
+                    display.drawText(New Point(tx, ty), "Center Position: " & shift_x & " " & shift_y & "i", VBGame.grey, 10)
                     ty += 12
-                    vbgame.drawText(New Point(tx, ty), "Iterations: " & iterations, vbgame.grey, 10)
+                    display.drawText(New Point(tx, ty), "Iterations: " & iterations, VBGame.grey, 10)
                     ty += 12
                 End If
 
@@ -319,7 +284,7 @@ Public Class Form1
                     fastlevel = 1
                     drawhud = False
                     change = True
-                    vbgame.saveImage(session & "_" & zoom & ".bmp")
+                    VBGame.saveImage(display.getImageFromDisplay(), session & "_" & zoom & ".bmp")
                 End If
 
                 If zoom < 1 Then
@@ -331,19 +296,20 @@ Public Class Form1
                 End If
 
                 If change Then
+                    display.pushMouseEvent(New MouseEvent(New Point(0, 0), MouseEvent.actions.move, MouseEvent.buttons.none))
                     If fastlevel < 1 Then
                         fastlevel = 1
                     End If
-                    vbgame.fill(Color.FromArgb(64, 255, 255, 255))
-                    vbgame.drawCenteredText(vbgame.getRect(), "Rendering...", vbgame.black, 64)
-                    vbgame.update()
+                    display.fill(Color.FromArgb(64, 255, 255, 255))
+                    display.drawCenteredText(display.getRect(), "Rendering...", VBGame.black, 64)
+                    display.update()
                     drawFractal()
-                    vbgame.update()
+                    display.update()
                     change = False
                 End If
 
-                vbgame.update()
-                vbgame.clockTick(60)
+                display.update()
+                display.clockTick(60)
             End While
         End While
 

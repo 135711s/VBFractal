@@ -24,3 +24,14 @@ C:\Users\pc\Desktop\coding\GitHub\Fractal\Fractal\bin\Debug\Fractal.exe.config
 C:\Users\pc\Desktop\coding\GitHub\Fractal\Fractal\obj\Debug\Fractal.exe
 C:\Users\pc\Desktop\coding\GitHub\Fractal\Fractal\obj\Debug\Fractal.xml
 C:\Users\pc\Desktop\coding\GitHub\Fractal\Fractal\obj\Debug\Fractal.pdb
+E:\coding\GitHub\Fractal\Fractal\bin\Debug\Fractal.exe.config
+E:\coding\GitHub\Fractal\Fractal\obj\Debug\Fractal.exe
+E:\coding\GitHub\Fractal\Fractal\obj\Debug\Fractal.xml
+E:\coding\GitHub\Fractal\Fractal\obj\Debug\Fractal.pdb
+E:\coding\GitHub\Fractal\Fractal\bin\Debug\Fractal.exe
+E:\coding\GitHub\Fractal\Fractal\bin\Debug\Fractal.pdb
+E:\coding\GitHub\Fractal\Fractal\bin\Debug\Fractal.xml
+E:\coding\GitHub\Fractal\Fractal\obj\Debug\Fractal.vbprojResolveAssemblyReference.cache
+E:\coding\GitHub\Fractal\Fractal\obj\Debug\Fractal.Form1.resources
+E:\coding\GitHub\Fractal\Fractal\obj\Debug\Fractal.Resources.resources
+E:\coding\GitHub\Fractal\Fractal\obj\Debug\Fractal.vbproj.GenerateResource.Cache

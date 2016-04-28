@@ -6,29 +6,7 @@ Fractal
 </name>
 </assembly>
 <members>
-<member name="F:Fractal.VBGame.form">
-	<summary>
- Game loop needs to be a thread.
- To use, the display must be set the the form's load event.
- 
- Usage ----------------------------------------------------
- 
- Dim object As New VBGame
- object.setdisplay(form, "[width]x[height]")
- 
- Loop structure -------------------------------------------
- 
- While run
- 
-     [do something]    
- 
-     vbgame.update() 'Renders the buffer to the screen
-     vbgame.clocktick([fps]) 'Waits so that a certain amount of frames pass in a second
-     
- End While
- </summary>
-	<remarks>Version 0.6</remarks>
-</member><member name="P:Fractal.My.Resources.Resources.ResourceManager">
+<member name="P:Fractal.My.Resources.Resources.ResourceManager">
 	<summary>
   Returns the cached ResourceManager instance used by this class.
 </summary>
@@ -41,6 +19,163 @@ Fractal
 	<summary>
   A strongly-typed resource class, for looking up localized strings, etc.
 </summary>
+</member><member name="M:Fractal.DrawBase.update">
+	<summary>
+ Renders the display buffer to the form.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Fractal.DrawBase.getRect">
+	<summary>
+ Gets the display area as a rectangle.
+ </summary>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Fractal.DrawBase.blit(System.Drawing.Image,System.Drawing.Rectangle)">
+	<summary>
+ Draws an image to the screen.
+ </summary>
+	<param name="image"></param>
+	<param name="rect"></param>
+	<remarks></remarks>
+</member><member name="M:Fractal.VBGame.saveImage(System.Drawing.Bitmap,System.String,System.Drawing.Imaging.ImageFormat)">
+	<summary>
+ Saves image to a file
+ </summary>
+	<param name="image"></param>
+	<param name="path"></param>
+	<param name="format"></param>
+	<remarks></remarks>
+</member><member name="M:Fractal.VBGame.sliceSpriteSheet(System.Drawing.Image,System.Drawing.Size,System.Int32,System.Boolean)">
+	<summary>
+ Seperates images from a larger image. Operates from left to right, then moving down.
+ </summary>
+	<param name="sheet">Image of spritesheet.</param>
+	<param name="rowcolumn">Amount of images in the width and height.</param>
+	<param name="nimages">How many images from the sheet should be sliced.</param>
+	<param name="reverse">To reverse the individual images after slicing.</param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Fractal.VBGame.setDisplay(System.Windows.Forms.Form@,System.Drawing.Size,System.String,System.Boolean,System.Boolean)">
+	<summary>
+ Configures VBGame for operation. Must be called before starting game loop.
+ </summary>
+	<param name="f">Form that will be drawn on.</param>
+	<param name="resolution">Width and height of display area, in pixels.</param>
+	<param name="title">String that will be displayed on title bar.</param>
+	<param name="sharppixels">Enabling this will turn off pixel smoothing. Good for pixel art.</param>
+	<param name="fullscreen"></param>
+	<remarks></remarks>
+</member><member name="M:Fractal.VBGame.clockTick(System.Double)">
+	<summary>
+ Waits so that the specified fps can be achieved.
+ </summary>
+	<param name="fps"></param>
+	<remarks></remarks>
+</member><member name="M:Fractal.VBGame.getTime">
+	<summary>
+ Gets the time in milliseconds since the last clockTick()
+ </summary>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="T:Fractal.VBGame">
+	<summary>
+ Game loop must be in a thread.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Fractal.Surface.#ctor(System.Drawing.Rectangle,Fractal.VBGame)">
+	<summary>
+	</summary>
+	<param name="rect"></param>
+	<param name="parentdisplay">Display to draw on.</param>
+	<remarks></remarks>
+</member><member name="T:Fractal.Surface">
+	<summary>
+ Gets a portion of the display given to do drawing operations on.
+ Anything drawn outside of the bounds of the surface will not be drawn on the parent display.
+ Surfaces are static.
+ </summary>
+	<remarks></remarks>
+</member><member name="P:Fractal.Sound.volume">
+	<summary>
+ Changing this will update the volume.
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Fractal.Sound.play(System.Boolean)">
+	<summary>
+	</summary>
+	<param name="repeat">If enabled, the sound will loop. Note: this does not work with .wav files.</param>
+	<remarks></remarks>
+</member><member name="M:Fractal.Animation.#ctor(System.Drawing.Image,System.Drawing.Size,System.Int32,System.Int32,System.Boolean,System.Boolean)">
+	<summary>
+	</summary>
+	<param name="strip">Image of spritesheet.</param>
+	<param name="rowcolumn">Amount of images in the width and height.</param>
+	<param name="nframes">How many images from the sheet should be sliced.</param>
+	<param name="reverse">To reverse the individual images after slicing.</param>
+	<param name="animloop">If enabled, the animation will loop.</param>
+	<remarks></remarks>
+</member><member name="M:Fractal.Animation.getFramesFromStrip(System.Drawing.Image,System.Drawing.Size,System.Int32,System.Boolean)">
+	<summary>
+ See VBGame.sliceSpriteSheet()
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Fractal.Animation.handle">
+	<summary>
+ Used in conjection with VBGame.blit(), this will pick the image to return based on a timer.
+ </summary>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Fractal.Animation.getFrame(System.Boolean)">
+	<summary>
+ Gets the next frame.
+ </summary>
+	<param name="loopanim"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Fractal.Animations.handle">
+	<summary>
+ Returns a frame from the active animation.
+ </summary>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Fractal.Sprite.normalizeAngle">
+	<summary>
+ Ensures the sprite's angle is between 0 and 360 degrees.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Fractal.Sprite.keepInBounds(System.Drawing.Rectangle,System.Boolean,System.Boolean)">
+	<summary>
+ Keeps the sprite in a rectangle.
+ </summary>
+	<param name="bounds">Rectangle container.</param>
+	<param name="trig">Whether or not the sprite is using angled movement.</param>
+	<param name="bounce">If enabled, the sprite will change it's movement to give the appearence of bouncing.</param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="F:Fractal.Button.display">
+	<summary>
+ Put in vbgame.getMouseEvents() loop.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Fractal.Button.calculateFontSize">
+	<summary>
+ Calculates the font size based on the current rectangle.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Fractal.Button.draw">
+	<summary>
+ Draws the button. Keep out of event loops.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Fractal.Button.handle(Fractal.MouseEvent)">
+	<summary>
+ Put inside the VBGame.getMouseEvents() loop. Will return the MouseEvent of a successful click.
+ </summary>
+	<param name="e">MouseEvent from loop.</param>
+	<returns></returns>
+	<remarks></remarks>
 </member>
 </members>
 </doc>
