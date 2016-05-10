@@ -1,7 +1,7 @@
-﻿Public Class Complex
+Public Class Complex
 
     Private random = New Random
-    Public randompoint As ComplexNumber = New ComplexNumber
+    Public juliapoint As ComplexNumber = New ComplexNumber
     Public mode As Byte = modes.mandelbrot
 
     Enum modes
@@ -77,8 +77,8 @@
     End Function
 
     Sub generateRandomPoint()
-        randompoint.x = random.next(-1000000, 1000001) / 1000000
-        randompoint.y = random.next(-1000000, 1000001) / 1000000
+        juliapoint.x = random.next(-1000000, 1000001) / 1000000
+        juliapoint.y = random.next(-1000000, 1000001) / 1000000
     End Sub
 
     Function add(c1 As ComplexNumber, c2 As ComplexNumber) As ComplexNumber
@@ -110,12 +110,12 @@
         'cf = add(multiply(c, c), New ComplexNumber(-0.1, 0.7)) 'rabbit
         'cf = add(multiply(c, c), New ComplexNumber(-0.835, 0.2321)) 'dragon
         'cf = add(multiply(c, c), New ComplexNumber(-0.8, 0.156)) 'swirly dragon
-        'cf = add(multiply(c, c), randompoint)
+        'cf = add(multiply(c, c), New ComplexNumber(0.276166999999999, -2.40000000003328 * Math.Pow(10, -5))) 'swirly thing
 
         If mode = modes.mandelbrot Then
             cf = add(multiply(c, c), oc)
         ElseIf mode = modes.julia Then
-            cf = add(multiply(c, c), randompoint)
+            cf = add(multiply(c, c), juliapoint)
         End If
 
         Return cf
