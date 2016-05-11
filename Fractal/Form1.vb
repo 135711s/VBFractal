@@ -64,6 +64,24 @@ Public Class Form1
                 ElseIf e.KeyCode = Keys.R Then
                     resetValues()
                     complex.generateRandomPoint()
+
+                ElseIf e.KeyCode = Keys.ControlKey Then
+                    If complex.juliapoint.x < 0 Then
+                        complex.juliapoint = New ComplexNumber(complex.juliapoint.x + modifier, complex.juliapoint.y)
+                    Else
+                        complex.juliapoint = New ComplexNumber(complex.juliapoint.x - modifier, complex.juliapoint.y)
+                    End If
+                    If complex.juliapoint.y < 0 Then
+                        complex.juliapoint = New ComplexNumber(complex.juliapoint.x, complex.juliapoint.y + modifier)
+                    Else
+                        complex.juliapoint = New ComplexNumber(complex.juliapoint.x, complex.juliapoint.y - modifier)
+                    End If
+
+                ElseIf e.KeyCode = Keys.M Then
+                    complex.mode += 1
+                    If complex.mode > 1 Then
+                        complex.mode = 0
+                    End If
                 End If
             Next
 
@@ -76,17 +94,6 @@ Public Class Form1
                     End If
                 End If
             Next
-
-            'If complex.juliapoint.x < 0 Then
-            '    complex.juliapoint = New ComplexNumber(complex.juliapoint.x + modifier, complex.juliapoint.y)
-            'Else
-            '    complex.juliapoint = New ComplexNumber(complex.juliapoint.x - modifier, complex.juliapoint.y)
-            'End If
-            'If complex.juliapoint.y < 0 Then
-            '    complex.juliapoint = New ComplexNumber(complex.juliapoint.x, complex.juliapoint.y + modifier)
-            'Else
-            '    complex.juliapoint = New ComplexNumber(complex.juliapoint.x, complex.juliapoint.y - modifier)
-            'End If
 
             display.blit(complex.generateFractal(New Size(imageSize, imageSize), pixelSkip, zoom, shift_x, shift_y, iterations, color), display.getRect())
             'VBGame.saveImage(display.getImageFromDisplay(), session & "_" & frame & "_" & complex.juliapoint.x & "_" & complex.juliapoint.y & ".png")
