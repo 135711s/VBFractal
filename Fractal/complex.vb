@@ -65,6 +65,7 @@ Public Class Complex
 
                     esccolortHSV = HSV.fromRGB(basecolor.R, basecolor.G, basecolor.B)
                     esccolortHSV.H += (escapeSpeed * 50) / 5
+                    'esccolortHSV.H = 360 * ((escapeSpeed + 1 - Math.Log(Math.Log(Math.Abs(magnitude))) / Math.Log(2)) / iterations)
                     esccolort = esccolortHSV.toRGB()
 
                     display.drawRect(New Rectangle(displayPixel.x, displayPixel.y, pixelSkip, pixelSkip), esccolort)
@@ -110,7 +111,7 @@ Public Class Complex
         'cf = add(multiply(c, c), New ComplexNumber(-0.1, 0.7)) 'rabbit
         'cf = add(multiply(c, c), New ComplexNumber(-0.835, 0.2321)) 'dragon
         'cf = add(multiply(c, c), New ComplexNumber(-0.8, 0.156)) 'swirly dragon
-        'cf = add(multiply(c, c), New ComplexNumber(0.276166999999999, -2.40000000003328 * Math.Pow(10, -5))) 'swirly thing
+        'cf = add(multiply(c, c), New ComplexNumber(0.324311999999999, -0.0496199999999995)) 'swirly thing
 
         If mode = modes.mandelbrot Then
             cf = add(multiply(c, c), oc)
